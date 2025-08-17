@@ -15,11 +15,24 @@ function createAddQuoteForm() {
   const category = document.getElementById("newQuoteCategory").value;
 
   if (text && category) {
+    // Add new quote to the array
     quotes.push({ text: text, category: category });
-    document.getElementById("quoteDisplay").innerHTML = text + " — " + category;
+
+    // Instead of using innerHTML, create DOM elements
+    const quoteDisplay = document.getElementById("quoteDisplay");
+    quoteDisplay.innerHTML = ""; // clear old content
+
+    const newQuoteElement = document.createElement("p"); // create new <p>
+    newQuoteElement.textContent = text + " — " + category;
+
+    // append the new element into the display
+    quoteDisplay.appendChild(newQuoteElement);
+
+    // clear inputs
     document.getElementById("newQuoteText").value = "";
     document.getElementById("newQuoteCategory").value = "";
   }
 }
+
 
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
