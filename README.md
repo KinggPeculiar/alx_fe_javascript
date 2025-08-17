@@ -1,21 +1,33 @@
-<!-- Dynamic Content Generator with Advanced DOM Manipulation -->
+# Dynamic Quote Generator
 
-This project is a hands-on exploration of JavaScript’s DOM manipulation capabilities. It demonstrates how to create, update, and manage dynamic content in the browser without relying on frameworks.
+A simple yet powerful **Dynamic Content Generator** built with vanilla JavaScript to practice **advanced DOM manipulation**.  
+This project dynamically creates, updates, and manages interactive elements directly through JavaScript — no frameworks required.  
 
-<!-- 🚀 Project Focus -->
+---
 
-Build a Dynamic Quote Generator that displays different quotes based on user-selected categories.
+## 🎯 Objective
+- Learn to create and manipulate dynamic content in a web application.  
+- Gain hands-on experience with **DOM APIs**.  
+- Explore generating and managing interactive elements entirely through JavaScript.  
 
-Allow users to add new quotes and categories dynamically through the UI.
+---
 
-Showcase advanced DOM methods for creating and handling interactive elements.
+## 📌 Task Description
+Develop a web application that dynamically generates content based on user input and interactions.  
+The project demonstrates how JavaScript can:  
+- Inject new elements into the DOM.  
+- Handle events and update content interactively.  
+- Maintain and update a data structure (quotes array) in sync with the UI.  
 
-<!-- 🎯 Learning Outcomes -->
+---
 
-Deepen understanding of document object model (DOM) manipulation.
+## 🖼️ Application Overview
+- Build a **Dynamic Quote Generator** that displays quotes based on user-selected categories.  
+- Provide a form interface that allows users to **add new quotes and categories** dynamically.  
+- Implement reusable functions:
+  - `showRandomQuote()` → Displays a random quote.  
+  - `addQuote()` → Adds a new quote + category from user input.  
 
-Learn to generate and inject elements directly via JavaScript.
+---
 
-Practice structuring code for interactivity without frameworks.
-
-This project highlights the power of vanilla JavaScript in building responsive, interactive web applications
+## 🏗️ Project Structure
