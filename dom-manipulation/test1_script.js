@@ -6,8 +6,8 @@ const quotes = [
 
 function displayRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
-  document.getElementById("quoteDisplay").innerHTML =
-    quotes[randomIndex].text + " — " + quotes[randomIndex].category;
+  const quoteDisplay = document.getElementById("quoteDisplay");
+  quoteDisplay.innerHTML = `"${quotes[randomIndex].text}" — ${quotes[randomIndex].category}`;
 }
 
 function addQuote() {
@@ -15,8 +15,11 @@ function addQuote() {
   const category = document.getElementById("newQuoteCategory").value;
 
   if (text && category) {
-    quotes.push({ text: text, category: category });
-    document.getElementById("quoteDisplay").innerHTML = text + " — " + category;
+    quotes.push({ text, category });
+
+    const quoteDisplay = document.getElementById("quoteDisplay");
+    quoteDisplay.innerHTML = `"${text}" — ${category}`;
+
     document.getElementById("newQuoteText").value = "";
     document.getElementById("newQuoteCategory").value = "";
   }
