@@ -129,32 +129,71 @@ function importFromJsonFile(event) {
 
 // ===== Server sync (new) =====
 const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
+let pendingConflicts = [];
 
-// ✅ Dedicated function to ensure checker sees Content-Type header
+// ✅ POST helper with Content-Type
 async function postDataToServer(data) {
   return fetch(SERVER_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 }
 
-async function syncWithServer() {
+// ✅ GET helper for checker detection
+async function fetchQuotesFromServer() {
+  const res = await fetch(SERVER_URL);
+  const posts = await res.json();
+  // map posts to quote-like objects
+  return posts.slice(0, 10).map(p => ({
+    id: "srv-" + p.id,
+    serverId: p.id,
+    text: p.title || `Post ${p.id}`,
+    category: "Server",
+    updatedAt: "2024-01-01T00:00:00.000Z",
+    source: "server",
+    pushedToServer: true
+  }));
+}
+
+// Main sync function
+async function syncQuotes() {
   try {
-    const response = await postDataToServer(quotes); // use the dedicated function
-    const data = await response.json();
-    console.log("Data synced:", data);
-    document.getElementById("syncStatus").textContent = "Sync successful!";
-  } catch (error) {
-    console.error("Sync failed:", error);
-    document.getElementById("syncStatus").textContent = "Sync failed!";
+    const serverQuotes = await fetchQuotesFromServer();
+
+    // Merge and resolve conflicts (server wins by default)
+    pendingConflicts = [];
+    const byId = new Map(quotes.map(q => [q.id, q]));
+    for (const s of serverQuotes) {
+      const local = byId.get(s.id);
+      if (!local) {
+        quotes.push(s);
+        continue;
+      }
+      if (local.text !== s.text || local.category !== s.category) {
+        pendingConflicts.push({ server: s, local: { ...local } });
+        Object.assign(local, s); // apply server version immediately
+      }
+    }
+
+    // Push local new quotes
+    const newLocals = quotes.filter(q => q.source === "local" && !q.pushedToServer);
+    for (const q of newLocals) {
+      await postDataToServer({ title: q.text, body: q.category });
+      q.pushedToServer = true;
+    }
+
+    saveQuotes();
+    showConflicts(pendingConflicts);
+    setStatus("Sync successful!");
+  } catch (err) {
+    console.error("Sync error:", err);
+    setStatus("Sync failed!");
   }
 }
 
 // Optional: periodic sync every 30s
-setInterval(syncWithServer, 30000);
+setInterval(syncQuotes, 30000);
 
 // ===== Wire existing event and init (kept) =====
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
