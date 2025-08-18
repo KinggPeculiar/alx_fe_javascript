@@ -74,8 +74,18 @@ function importFormJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
+// NEW FUNTIONS for filtering system
+function loadFilterPreference() {
+  const savedFilter = localStorage.getItem("selectedCategory");
+    if (savedFilter) {
+      document.getElementById("categoryFilter").value = savedFilter;
+      filterQuotes(); // Apply immediately on page load
+    }
+}
 
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 
 // Initialize
 loadQuotes();
+populateCategories();
+loadFilterPreference();
