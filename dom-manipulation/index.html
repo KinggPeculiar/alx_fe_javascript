@@ -8,13 +8,19 @@
     </head>
     <body>
         <h1>Dynamic Quote Generator</h1>
+
+        <!-- Category Filter -->
+        <label for="categoryFilter">Filter by category:</label>
         <select id="categoryFilter" onchange="filterQuotes()">
             <option value="all">All Categories</option>
+            <!-- Populated dynamically from JS -->
         </select>
 
+        <!-- Quote Display -->
         <div id="quoteDisplay"></div>
         <button id="newQuote">Show New Quote</button>
 
+        <!-- Add New Quote -->
         <div>
             <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
             <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
@@ -22,11 +28,25 @@
         </div>
 
         <!-- JSON Import/Export Controls -->
-         <div>
+        <div>
             <button onclick="exportToJsonFile()">Export Quotes</button>
-            <input type="file" id="importfile" accept=".json" onchange="importFromJsonFile(event)">
-         </div>
+            <label for="importFile">Import Quotes (JSON):</label>
+            <input type="file" id="importFile" accept=".json" onchange="importFormJsonFile(event)" title="Import Quotes from JSON file">
+        </div>
 
+        <!-- Sync controls -->
+        <div id="syncControls">
+            <button id="syncNowBtn" onclick="syncWithServer()">Sync Now</button>
+            <span id="syncStatus" aria-live="polite"></span>
+        </div>
+
+        <!-- Conflict panel (appears only when needed) -->
+        <div class="conflicts_container" id="conflictsContainer" style="display:none;">
+            <h3>Conflicts detected</h3>
+            <ul id="conflictsList"></ul>
+        </div>
+
+        <!-- Script -->
         <script src="script.js"></script>
     </body>
 </html>
